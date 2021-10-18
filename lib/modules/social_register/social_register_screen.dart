@@ -21,7 +21,7 @@ class SocialRegisterScreen extends StatelessWidget {
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
         listener: (context, state) {
           if (state is SocialUserCreateSuccessState) {
-            navigateAndEnd(context, SocialLayout());
+            navigateAndEnd(context, const SocialLayout());
           }
         },
         builder: (context, state) {
@@ -30,9 +30,9 @@ class SocialRegisterScreen extends StatelessWidget {
             appBar: AppBar(),
             body: Center(
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(30.0),
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -46,10 +46,10 @@ class SocialRegisterScreen extends StatelessWidget {
                               .copyWith(color: Colors.black),
                         ),
                         Text(
-                          'Register your account',
+                          'Communication is now easier register now to try it!!',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         defaultFormField(
@@ -62,7 +62,7 @@ class SocialRegisterScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.name),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         defaultFormField(
@@ -75,7 +75,7 @@ class SocialRegisterScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.emailAddress),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         defaultFormField(
@@ -93,7 +93,7 @@ class SocialRegisterScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.visiblePassword),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         defaultFormField(
@@ -106,17 +106,17 @@ class SocialRegisterScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.phone),
-                        SizedBox(
+                        const SizedBox(
                           height: 15.0,
                         ),
                         Conditional.single(
                           context: context,
-                          fallbackBuilder: (BuildContext context) => Center(
+                          fallbackBuilder: (BuildContext context) => const Center(
                             child: CircularProgressIndicator(),
                           ),
                           conditionBuilder: (BuildContext context) =>
                               state is! SocialRegisterLoadingState,
-                          widgetBuilder: (BuildContext context) => Container(
+                          widgetBuilder: (BuildContext context) => SizedBox(
                             height: 50.0,
                             width: double.infinity,
                             child: MaterialButton(
@@ -132,7 +132,7 @@ class SocialRegisterScreen extends StatelessWidget {
                               },
                               child: Text(
                                 "Register".toUpperCase(),
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
