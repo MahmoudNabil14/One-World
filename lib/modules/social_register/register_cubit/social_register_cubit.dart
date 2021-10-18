@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/models/social_user_model.dart';
-import 'package:social_app/modules/register_screen/register_cubit/social_register_states.dart';
+import 'package:social_app/modules/social_register/register_cubit/social_register_states.dart';
 
 class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   SocialRegisterCubit() : super(SocialRegisterInitialState());

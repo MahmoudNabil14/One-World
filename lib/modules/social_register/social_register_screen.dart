@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:social_app/layout/social_layout.dart';
-import 'package:social_app/modules/register_screen/register_cubit/social_register_cubit.dart';
-import 'package:social_app/modules/register_screen/register_cubit/social_register_states.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+import 'package:social_app/modules/social_register/register_cubit/social_register_cubit.dart';
+import 'package:social_app/modules/social_register/register_cubit/social_register_states.dart';
 import 'package:social_app/shared/components/components.dart';
 
 class SocialRegisterScreen extends StatelessWidget {
@@ -16,15 +16,15 @@ class SocialRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SocialRegisterCubit(),
+      create: (BuildContext context) => SocialRegisterCubit(),
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
-        listener: (context, state) {
-          if (state is SocialRegisterSuccessState) {
+        listener: (context,state){
+          if(state is SocialUserCreateSuccessState){
             navigateAndEnd(context, SocialLayout());
           }
         },
         builder: (context, state) {
-          var cubit = SocialRegisterCubit.get(context);
+          var registerCubit = SocialRegisterCubit.get(context);
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -78,13 +78,13 @@ class SocialRegisterScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                            isPassword: cubit.isPassword,
+                            isPassword: registerCubit.isPassword,
                             text: 'Password',
                             controller: passwordController,
                             prefix: Icons.lock,
-                            suffix: cubit.suffix,
+                            suffix: registerCubit.suffix,
                             suffixPressed: () {
-                              cubit.changeSuffix();
+                              registerCubit.changeSuffix();
                             },
                             validate: (String value) {
                               if (value.isEmpty) {

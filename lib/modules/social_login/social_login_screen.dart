@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
-import 'package:social_app/modules/register_screen/social_register_screen.dart';
+import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_cubit.dart';
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_states.dart';
+import 'package:social_app/modules/social_register/social_register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 
 class SocialLoginScreen extends StatelessWidget {
@@ -20,9 +21,12 @@ class SocialLoginScreen extends StatelessWidget {
           if(state is SocialLoginErrorState){
             showToast(message: state.error.toString(), state: toastStates.ERROR);
           }
+          else if(state is SocialLoginSuccessState){
+            navigateAndEnd(context, SocialLayout());
+          }
         },
         builder: (context,state){
-          var cubit = SocialLoginCubit.get(context);
+          var loginCubit = SocialLoginCubit.get(context);
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -63,13 +67,13 @@ class SocialLoginScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                            isPassword: cubit.isPassword,
+                            isPassword: loginCubit.isPassword,
                             text: 'Password',
                             controller: passwordController,
                             prefix: Icons.lock,
-                            suffix: cubit.suffix,
+                            suffix: loginCubit.suffix,
                             suffixPressed: () {
-                              cubit.changeSuffix();
+                              loginCubit.changeSuffix();
                             },
                             validate: (String value) {
                               if (value.isEmpty) {
@@ -78,7 +82,7 @@ class SocialLoginScreen extends StatelessWidget {
                             },
                             onSubmit: (String value) {
                               if (formkey.currentState!.validate()) {
-                                // cubit.userLogin(
+                                // loginCubit.userLogin(
                                 //     email: emailController.text,
                                 //     password: passwordController.text);
                               }
@@ -100,7 +104,7 @@ class SocialLoginScreen extends StatelessWidget {
                               color: Colors.blue,
                               onPressed: () {
                                 if (formkey.currentState!.validate()) {
-                                  cubit.userLogin(
+                                  loginCubit.userLogin(
                                       email: emailController.text,
                                       password: passwordController.text);
                                 }
