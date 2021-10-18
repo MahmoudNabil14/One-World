@@ -10,7 +10,7 @@ import 'package:social_app/shared/components/components.dart';
 class SocialLoginScreen extends StatelessWidget {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  var formkey = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class SocialLoginScreen extends StatelessWidget {
                 child: Padding(
                   padding:  const EdgeInsets.all(30.0),
                   child: Form(
-                    key: formkey,
+                    key: formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,7 +81,7 @@ class SocialLoginScreen extends StatelessWidget {
                               }
                             },
                             onSubmit: (String value) {
-                              if (formkey.currentState!.validate()) {
+                              if (formKey.currentState!.validate()) {
                                 // loginCubit.userLogin(
                                 //     email: emailController.text,
                                 //     password: passwordController.text);
@@ -103,7 +103,7 @@ class SocialLoginScreen extends StatelessWidget {
                             child: MaterialButton(
                               color: Colors.blue,
                               onPressed: () {
-                                if (formkey.currentState!.validate()) {
+                                if (formKey.currentState!.validate()) {
                                   loginCubit.userLogin(
                                       email: emailController.text,
                                       password: passwordController.text);
