@@ -4,11 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/social_login/social_login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+
   await Firebase.initializeApp();
+
   Bloc.observer = MyBlocObserver();
+
+  runApp(const MyApp());
+
+
 }
 
 class MyApp extends StatelessWidget {

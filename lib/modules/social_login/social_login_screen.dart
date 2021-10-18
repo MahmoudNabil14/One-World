@@ -31,9 +31,9 @@ class SocialLoginScreen extends StatelessWidget {
             appBar: AppBar(),
             body: Center(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics:  const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding:  const EdgeInsets.all(30.0),
                   child: Form(
                     key: formkey,
                     child: Column(
@@ -50,7 +50,7 @@ class SocialLoginScreen extends StatelessWidget {
                           'Login into you account',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        const SizedBox(
+                         const SizedBox(
                           height: 30.0,
                         ),
                         defaultFormField(
@@ -63,7 +63,7 @@ class SocialLoginScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.emailAddress),
-                        const SizedBox(
+                         const SizedBox(
                           height: 15.0,
                         ),
                         defaultFormField(
@@ -88,12 +88,12 @@ class SocialLoginScreen extends StatelessWidget {
                               }
                             },
                             type: TextInputType.visiblePassword),
-                        const SizedBox(
+                         const SizedBox(
                           height: 15.0,
                         ),
                         Conditional.single(
                           context: context,
-                          fallbackBuilder: (BuildContext context) => const Center(
+                          fallbackBuilder: (BuildContext context) =>  const Center(
                             child: CircularProgressIndicator(),
                           ),
                           conditionBuilder: (BuildContext context) =>true ,
@@ -109,9 +109,9 @@ class SocialLoginScreen extends StatelessWidget {
                                       password: passwordController.text);
                                 }
                               },
-                              child: const Text(
+                              child:  const Text(
                                 "LOGIN",
-                                style: TextStyle(color: Colors.white),
+                                style:  TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -119,12 +119,12 @@ class SocialLoginScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('Don\'t have an account?'),
+                             const Text('Don\'t have an account?'),
                             TextButton(
                                 onPressed: () {
                                   navigateTo(context, SocialRegisterScreen());
                                 },
-                                child: const Text('Register now'))
+                                child:  const Text('Register now'))
                           ],
                         ),
                       ],
