@@ -24,7 +24,6 @@ class HomeScreen extends StatelessWidget {
 
                ListView.separated(
                  shrinkWrap: true,
-
                   physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context,index) => const SizedBox(height: 0.0,),
                   itemCount: 10,
@@ -239,16 +238,20 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 15.0,),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
+                      Column(
+                        children: [
+                          Container(
+                            child: InkWell(
+                              onTap: (){
 
-                          },
-                          child: Text('write a comment ...', style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2,),
-                        ),
+                              },
+                                child: Text('write a comment ...', style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText2,),
+                              ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
