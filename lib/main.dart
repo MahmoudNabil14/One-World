@@ -21,7 +21,7 @@ void main() async {
 
   late Widget widget;
 
-  if(uId.isNotEmpty){
+  if(uId != null){
     widget = const SocialLayout();
   }else{
     widget = SocialLoginScreen();

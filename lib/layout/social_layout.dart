@@ -1,10 +1,9 @@
-import 'package:buildcondition/buildcondition.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
+import 'package:social_app/modules/post_screen.dart';
+import 'package:social_app/shared/components/components.dart';
 
 class SocialLayout extends StatelessWidget {
   const SocialLayout({Key? key}) : super(key: key);
@@ -12,43 +11,31 @@ class SocialLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is SocialAddPostState){
+          navigateTo(context, const PostScreen());
+        }
+      },
       builder: (context, state) {
+        var cubit = SocialCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: const Text('News Feed'),
+            title: Text(cubit.appBarTitles[cubit.currentIndex]),
           ),
-          body: BuildCondition(
-            condition: SocialCubit.get(context).userModel != null,
-            builder: (context)=> Column(
-              children: [
-                Container(
-                  color: Colors.red.withOpacity(0.5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-
-                        const Icon(Icons.info_outline),
-
-                        const SizedBox(width: 10.0,),
-
-                        const Text('please verify your email'),
-
-                        const Spacer(),
-
-                        TextButton(
-                            onPressed: () {
-                              FirebaseAuth.instance.currentUser!.sendEmailVerification();
-                            },
-                            child: const Text('send',style: TextStyle(fontSize: 18.0),)),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            fallback: (context)=>  const Center(child: CircularProgressIndicator()),
+          body: cubit.screens[cubit.currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index){
+              cubit.changeBottomNav(index);
+            },
+            currentIndex: cubit.currentIndex,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
+              BottomNavigationBarItem(icon: Icon(Icons.post_add), label: 'Post'),
+              BottomNavigationBarItem(icon: Icon(Icons.location_on_rounded), label: 'Users'),
+              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+            ],
           ),
         );
       },
