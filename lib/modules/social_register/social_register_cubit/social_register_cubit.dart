@@ -38,7 +38,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>{
     required String uId,
     required String phone
 }){
-    SocialUserModel userModel = SocialUserModel(name, email, phone, uId);
+    SocialUserModel userModel = SocialUserModel( name, email, uId, phone, false);
     FirebaseFirestore.instance.collection('users').doc(uId).set(userModel.toMap()).then((value) {
       emit(SocialUserCreateSuccessState());
     }).catchError((error){

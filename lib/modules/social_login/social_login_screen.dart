@@ -6,6 +6,7 @@ import 'package:social_app/modules/social_login/social_login_cubit/social_login_
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_states.dart';
 import 'package:social_app/modules/social_register/social_register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget {
   var emailController = TextEditingController();
@@ -22,7 +23,9 @@ class SocialLoginScreen extends StatelessWidget {
             showToast(message: state.error.toString(), state: toastStates.ERROR);
           }
           else if(state is SocialLoginSuccessState){
-            navigateAndEnd(context, SocialLayout());
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value){
+              navigateAndEnd(context, const SocialLayout());
+            });
           }
         },
         builder: (context,state){
