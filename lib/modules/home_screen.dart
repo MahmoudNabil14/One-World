@@ -238,20 +238,19 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 15.0,),
-                      Column(
-                        children: [
-                          Container(
-                            child: InkWell(
-                              onTap: (){
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
 
-                              },
-                                child: Text('write a comment ...', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyText2,),
-                              ),
+                          },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12.0),
+                              child: Text('write a comment ...', style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText2,),
+                            ),
                           ),
-                        ],
                       ),
                     ],
                   ),
