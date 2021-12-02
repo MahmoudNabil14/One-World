@@ -8,9 +8,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialCubit,SocialStates>(
-      listener: (context, states){},
-      builder: (context, states){
+    return BlocConsumer<SocialCubit, SocialStates>(
+      listener: (context, states) {},
+      builder: (context, states) {
         var userModel = SocialCubit.get(context).userModel;
         return Padding(
           padding: const EdgeInsets.all(8.0),
@@ -26,17 +26,22 @@ class SettingsScreen extends StatelessWidget {
                       child: Container(
                         height: 170.0,
                         width: double.infinity,
-                        decoration:  BoxDecoration(
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(4.0),topRight: Radius.circular(4.0)),
-                          image: DecorationImage(image:NetworkImage(
-                            "${userModel!.cover}",),
-                              fit: BoxFit.cover ),
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0)),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                "${userModel!.cover}",
+                              ),
+                              fit: BoxFit.cover),
                         ),
                       ),
                     ),
                     CircleAvatar(
                       radius: 68.0,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       child: const CircleAvatar(
                         radius: 64.0,
                         backgroundImage: NetworkImage(
@@ -44,62 +49,111 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
-              const SizedBox(height: 10.0,),
-              Text(userModel.name,style: Theme.of(context).textTheme.headline6,),
-              const SizedBox(height: 8.0,),
-              Text(userModel.bio,style: Theme.of(context).textTheme.bodyText2),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                userModel.name,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Text(userModel.bio, style: Theme.of(context).textTheme.bodyText2),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('100',style: Theme.of(context).textTheme.subtitle2,),
-                          Text('posts',style: Theme.of(context).textTheme.subtitle2,),
-
-                        ],
+                      child: InkWell(
+                        onTap: (){},
+                        child: Column(
+                          children: [
+                            Text(
+                              '88',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                            Text(
+                              'posts',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('100',style: Theme.of(context).textTheme.subtitle2,),
-                          Text('posts',style: Theme.of(context).textTheme.subtitle2,),
-
-                        ],
+                      child: InkWell(
+                        onTap: (){},
+                        child: Column(
+                          children: [
+                            Text(
+                              '231',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                            Text(
+                              'photos',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('100',style: Theme.of(context).textTheme.subtitle2,),
-                          Text('posts',style: Theme.of(context).textTheme.subtitle2,),
-
-                        ],
+                      child: InkWell(
+                        onTap: (){},
+                        child: Column(
+                          children: [
+                            Text(
+                              '13.4K',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                            Text(
+                              'Followers',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('100',style: Theme.of(context).textTheme.subtitle2,),
-                          Text('posts',style: Theme.of(context).textTheme.subtitle2,),
-
-                        ],
+                      child: InkWell(
+                        onTap: (){},
+                        child: Column(
+                          children: [
+                            Text(
+                              '55',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                            Text(
+                              'Following',
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: OutlinedButton(
+                          onPressed: () {}, child: const Text('Add Photos'))),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  OutlinedButton(onPressed: () {}, child: const Icon(Icons.edit)
+                  ),
+                ],
               )
             ],
           ),
         );
       },
     );
-
   }
 }
