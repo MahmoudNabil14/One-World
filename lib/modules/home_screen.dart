@@ -168,26 +168,21 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(
                           width: 20.0,
                         ),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
+                        InkWell(
+                          onTap: () {
 
-                              },
-                              child: const Icon(
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
                                 Icons.message,
                                 color: Colors.green,
                                 size: 22.0,
                               ),
-                            ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            InkWell(
-                              onTap: () {
-
-                              },
-                              child: Text(
+                              const SizedBox(
+                                width: 5.0,
+                              ),
+                              Text(
                                 '132  comments',
                                 style: Theme
                                     .of(context)
@@ -196,8 +191,8 @@ class HomeScreen extends StatelessWidget {
                                     .copyWith(
                                     color: Colors.grey[700]),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           width: 20.0,

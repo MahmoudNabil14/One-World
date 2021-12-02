@@ -7,26 +7,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/models/social_user_model.dart';
 import 'package:social_app/modules/social_register/social_register_cubit/social_register_states.dart';
 
+class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
+  SocialRegisterCubit() : super(SocialRegisterInitialState());
 
-class SocialRegisterCubit extends Cubit<SocialRegisterStates>{
-  SocialRegisterCubit () : super (SocialRegisterInitialState());
-  static SocialRegisterCubit get(context)=> BlocProvider.of(context);
-  bool isPassword =true ;
-  IconData suffix  = Icons.visibility_outlined;
+  static SocialRegisterCubit get(context) => BlocProvider.of(context);
+  bool isPassword = true;
 
+  IconData suffix = Icons.visibility_outlined;
 
-  void userRegister({
-    required String name,
-    required String email,
-    required String password,
-    required String phone
-  })
-  {
+  void userRegister(
+      {required String name,
+      required String email,
+      required String password,
+      required String phone}) {
     emit(SocialRegisterLoadingState());
-    FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password)
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      userCreate(name: name,email: email,phone: phone,uId: value.user!.uid);
-    }).catchError((error){
+      userCreate(name: name, email: email, phone: phone, uId: value.user!.uid);
+    }).catchError((error) {
       print(error.toString());
       emit(SocialRegisterErrorState(error.toString()));
     });
@@ -35,20 +34,33 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>{
   void userCreate({
     required String name,
     required String email,
+    required String phone,
     required String uId,
-    required String phone
-}){
-    SocialUserModel userModel = SocialUserModel( name, email, uId, phone, false);
-    FirebaseFirestore.instance.collection('users').doc(uId).set(userModel.toMap()).then((value) {
+  }) {
+    SocialUserModel userModel = SocialUserModel(
+        name,
+        email,
+        phone,
+        uId,
+        'https://image.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg',
+        'https://image.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg',
+        'write your bio...',
+        false);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .set(userModel.toMap())
+        .then((value) {
       emit(SocialUserCreateSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       emit(SocialUserCreateErrorState());
     });
   }
 
-  void changeSuffix(){
+  void changeSuffix() {
     isPassword = !isPassword;
-    suffix = isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    suffix =
+        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
     emit(SocialChangeRegisterSuffixState());
   }
 }
