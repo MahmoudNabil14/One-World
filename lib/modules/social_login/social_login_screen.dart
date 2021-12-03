@@ -6,6 +6,7 @@ import 'package:social_app/modules/social_login/social_login_cubit/social_login_
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_states.dart';
 import 'package:social_app/modules/social_register/social_register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget {
@@ -24,6 +25,7 @@ class SocialLoginScreen extends StatelessWidget {
           }
           else if(state is SocialLoginSuccessState){
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value){
+              uId = CacheHelper.getData(key: 'uId');
               navigateAndEnd(context, const SocialLayout());
             });
           }

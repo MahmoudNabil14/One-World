@@ -4,8 +4,9 @@ import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/social_register/social_register_cubit/social_register_cubit.dart';
 import 'package:social_app/modules/social_register/social_register_cubit/social_register_states.dart';
-
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/components/constants.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialRegisterScreen extends StatelessWidget {
   var nameController = TextEditingController();
@@ -14,6 +15,8 @@ class SocialRegisterScreen extends StatelessWidget {
   var phoneController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
+  SocialRegisterScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -21,7 +24,10 @@ class SocialRegisterScreen extends StatelessWidget {
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
         listener: (context, state) {
           if (state is SocialUserCreateSuccessState) {
-            navigateAndEnd(context, const SocialLayout());
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value){
+              uId = CacheHelper.getData(key: 'uId');
+              navigateAndEnd(context, const SocialLayout());
+          });
           }
         },
         builder: (context, state) {
