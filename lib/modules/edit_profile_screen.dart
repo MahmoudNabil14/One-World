@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
@@ -13,12 +15,11 @@ class EditProfileScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    SocialCubit.get(context).emit(SocialNavigateToSuccessState());
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state){},
       builder: (context, state){
         var editUserModel = SocialCubit.get(context).userModel;
-        var coverImage = SocialCubit.get(context).coverImage;
+        File? coverImage = SocialCubit.get(context).coverImage;
         var profileImage = SocialCubit.get(context).profileImage;
         nameController.text = editUserModel!.name;
         bioController.text = editUserModel.bio;
@@ -26,11 +27,6 @@ class EditProfileScreen extends StatelessWidget {
 
         return Scaffold(
             appBar: defaultAppBar(
-              onPressed: (){
-                Navigator.pop(context);
-                SocialCubit.get(context).profileImage = null;
-                SocialCubit.get(context).coverImage=null;
-              },
               context: context,
               title: 'Edit Profile',
               actions: [
@@ -84,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
                                     borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(4.0),
                                         topRight: Radius.circular(4.0)),
-                                    image:   DecorationImage(
+                                        image: DecorationImage(
                                         image: coverImage == null ? NetworkImage(
                                           editUserModel.cover,
                                         ): FileImage(coverImage) as ImageProvider ,

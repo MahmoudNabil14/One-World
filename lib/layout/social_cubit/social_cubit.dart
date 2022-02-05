@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
+import 'package:social_app/models/post_user_model.dart';
 import 'package:social_app/models/social_user_model.dart';
 import 'package:social_app/modules/chats_screen.dart';
 import 'package:social_app/modules/home_screen.dart';
@@ -20,6 +21,8 @@ class SocialCubit extends Cubit<SocialStates> {
   static SocialCubit get(context) => BlocProvider.of(context);
 
   SocialUserModel? userModel;
+
+  PostUserModel? postUserModel;
 
   int currentIndex = 0;
 
@@ -59,9 +62,9 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  File? profileImage;
-  File? coverImage;
   var picker = ImagePicker();
+
+  File? profileImage;
 
   Future<void> getProfileImage({
     required String name,
@@ -78,6 +81,8 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialProfileImagePickedErrorState());
     }
   }
+
+  File? coverImage;
 
   Future<void> getCoverImage({
     required String name,
@@ -169,5 +174,65 @@ class SocialCubit extends Cubit<SocialStates> {
     }).catchError((error){
       emit(SocialUserUpdateErrorState());
     });
+  }
+
+  File? postPhoto;
+
+  Future<void> getPostPhotos() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      postPhoto = File(pickedFile.path);
+      emit(SocialPostPhotoPickedSuccessState());
+    } else {
+      print('No image Selected');
+      emit(SocialPostPhotoPickedErrorState());
+    }
+  }
+
+  void createPostWithoutPhotos({
+    required String text,
+    String? postImage,
+  }){
+    emit(SocialCreatePostLoadingState());
+    postUserModel = PostUserModel(
+      name: userModel!.name,
+      uId: userModel!.uId,
+      dateTime: DateTime.now().toString(),
+      postImage: postImage??'',
+      profileImage: userModel!.image,
+      postText: text
+        );
+    FirebaseFirestore.instance.collection('Posts').add(postUserModel!.toMap()).then((value) {
+      postPhoto = null;
+      emit(SocialCreatePostSuccessState());
+    }).catchError((error){
+      emit((SocialCreatePostErrorState()));
+    });
+  }
+
+  void createPostWithPhotos({
+    required String text,
+  }) {
+    emit(SocialCreatePostWithPhotoLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Posts Photos/ ${Uri.file(postPhoto!.path).pathSegments.last}')
+        .putFile(postPhoto!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createPostWithoutPhotos(text: text,postImage: value);
+        postPhoto = null;
+        emit(SocialCreatePostWithPhotoSuccessState());
+      }).catchError((error) {
+        emit((SocialCreatePostWithPhotoErrorState()));
+      });
+    }).catchError((error) {
+      emit((SocialCreatePostWithPhotoErrorState()));
+    });
+  }
+
+  void removePostPhotos(){
+    postPhoto = null;
+    emit(SocialRemovePostPhotos());
   }
 }
