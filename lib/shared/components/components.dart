@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+
 void navigateAndEnd(context, Widget widget) {
   Navigator.pushAndRemoveUntil(context,
       MaterialPageRoute(builder: (context) => widget), (route) => false);
@@ -52,9 +53,11 @@ Widget defaultFormField({
   Function? suffixPressed,
   required Function? validate,
   Function? onSubmit,
+
   required TextInputType type,
 }) {
   return TextFormField(
+
     controller: controller,
     obscureText: isPassword,
     onFieldSubmitted: (value) {
@@ -76,3 +79,21 @@ Widget defaultFormField({
     ),
   );
 }
+
+AppBar defaultAppBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
+  Function? onPressed
+})=> AppBar(
+      leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: ()=> onPressed!(),),
+  title: Text(title!),
+  titleSpacing: 5.0,
+  actions: actions);
+
+Widget defaultTextButton({
+  required String label,
+  Function? onPressed
+})=>TextButton(child: Text(label.toUpperCase(),style: const TextStyle(color: Colors.white, fontSize: 16.0),), onPressed: () => onPressed!() , );
+
+

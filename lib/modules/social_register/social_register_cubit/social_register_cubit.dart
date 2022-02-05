@@ -43,7 +43,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         phone,
         uId,
         'https://image.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg',
-        'https://image.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg',
+        'https://image.freepik.com/free-photo/valentines-day-still-life-design_23-2149246294.jpg?w=1380',
         'write your bio...',
         false);
     FirebaseFirestore.instance

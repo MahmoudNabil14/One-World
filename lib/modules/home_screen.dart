@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/layout/social_cubit/social_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,6 +37,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildPostItem(context) {
+    var HomeUserModel = SocialCubit.get(context).userModel;
     return Column(
       children: [
         Card(
@@ -48,10 +50,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
-                        radius: 22.0,
+                       CircleAvatar(
+                        radius: 27.0,
                         backgroundImage: NetworkImage(
-                          'https://image.freepik.com/free-photo/photo-positive-european-female-model-makes-okay-gesture-agrees-with-nice-idea_273609-25629.jpg',
+                          HomeUserModel!.image,
                         ),
                       ),
                       const SizedBox(

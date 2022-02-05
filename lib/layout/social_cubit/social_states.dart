@@ -14,3 +14,27 @@ class SocialGetUserErrorState extends SocialStates{
 class SocialChangeBottomNavState extends SocialStates{}
 
 class SocialAddPostState extends SocialStates{}
+
+class SocialProfileImagePickedSuccessState extends SocialStates{}
+
+class SocialProfileImagePickedErrorState extends SocialStates{}
+
+class SocialCoverImagePickedSuccessState extends SocialStates{}
+
+class SocialCoverImagePickedErrorState extends SocialStates{}
+
+class SocialUploadProfileImageSuccessState extends SocialStates{}
+
+class SocialUploadProfileImageErrorState extends SocialStates{}
+
+class SocialUploadCoverImageSuccessState extends SocialStates{}
+
+class SocialUploadCoverImageErrorState extends SocialStates{}
+
+class SocialUserUpdateErrorState extends SocialStates{}
+
+class SocialUserUpdateSuccessState extends SocialStates{}
+
+class SocialUserUploadLoadingState extends SocialStates{}
+
+class SocialNavigateToSuccessState extends SocialStates{}

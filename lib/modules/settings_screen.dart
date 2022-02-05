@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
+import 'package:social_app/modules/edit_profile_screen.dart';
+import 'package:social_app/shared/components/components.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -9,13 +11,17 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, states) {},
-      builder: (context, states) {
+      listener: (context, state) {},
+      builder: (context, state) {
         var userModel = SocialCubit.get(context).userModel;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              if(state is SocialUserUploadLoadingState)
+                const LinearProgressIndicator(minHeight: 5.0,),
+              if(state is SocialUserUploadLoadingState)
+                const SizedBox(height: 10.0,),
               SizedBox(
                 height: 230.0,
                 child: Stack(
@@ -42,10 +48,10 @@ class SettingsScreen extends StatelessWidget {
                       radius: 68.0,
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 64.0,
                         backgroundImage: NetworkImage(
-                          'https://image.freepik.com/free-photo/photo-positive-european-female-model-makes-okay-gesture-agrees-with-nice-idea_273609-25629.jpg',
+                          userModel.image,
                         ),
                       ),
                     ),
@@ -146,7 +152,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  OutlinedButton(onPressed: () {}, child: const Icon(Icons.edit)
+                  OutlinedButton(onPressed: () {navigateTo(context, EditProfileScreen());}, child: const Icon(Icons.edit)
                   ),
                 ],
               )
