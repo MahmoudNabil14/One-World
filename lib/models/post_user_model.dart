@@ -1,4 +1,4 @@
-class PostUserModel {
+class PostModel {
   late String name;
   late String uId;
   late String profileImage;
@@ -6,7 +6,7 @@ class PostUserModel {
   late String dateTime;
   late String postText;
 
-  PostUserModel({
+  PostModel({
     required this.name,
     required this.uId,
     required this.profileImage,
@@ -15,7 +15,7 @@ class PostUserModel {
     required this.postText,
   });
 
-  PostUserModel.fromJson(Map<String, dynamic> json){
+  PostModel.fromJson(Map<String, dynamic> json){
     name= json['name'];
     uId= json['uId'];
     profileImage= json['profileImage'];
