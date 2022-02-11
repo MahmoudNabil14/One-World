@@ -15,7 +15,7 @@ class SocialLayout extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {
         if(state is SocialAddPostState){
-          navigateTo(context, const PostScreen());
+          navigateTo(context,  PostScreen());
         }
       },
 

@@ -139,7 +139,7 @@ class EditProfileScreen extends StatelessWidget {
                           defaultFormField(
                               onSubmit: (value){},
                               suffixPressed: (){},
-                              text: 'Name',
+                              label: 'Name',
                               controller: nameController,
                               prefix: Icons.person,
                               validate: (String value) {
@@ -158,7 +158,7 @@ class EditProfileScreen extends StatelessWidget {
                           defaultFormField(
                               onSubmit: (value){},
                               suffixPressed: (){},
-                              text: 'Bio',
+                              label: 'Bio',
                               controller: bioController,
                               prefix: Icons.info,
                               validate: (String value){
@@ -178,7 +178,7 @@ class EditProfileScreen extends StatelessWidget {
                               onSubmit: (value){
                               },
                               suffixPressed: (){},
-                              text: 'Phone Number',
+                              label: 'Phone Number',
                               controller: phoneController,
                               prefix: Icons.phone,
                               validate: (String value){

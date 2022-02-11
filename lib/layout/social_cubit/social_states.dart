@@ -1,5 +1,8 @@
+
 abstract class SocialStates{}
-class SocialInitialState extends SocialStates{}
+class SocialInitialState extends SocialStates{
+
+}
 
 class SocialGetUserLoadingState extends SocialStates{}
 
@@ -33,6 +36,8 @@ class SocialChangeBottomNavState extends SocialStates{}
 
 class SocialAddPostState extends SocialStates{}
 
+class SocialEditProfileState extends SocialStates{}
+
 class SocialProfileImagePickedSuccessState extends SocialStates{}
 
 class SocialProfileImagePickedErrorState extends SocialStates{}
@@ -59,11 +64,11 @@ class SocialUserUpdateSuccessState extends SocialStates{}
 
 class SocialUserUploadLoadingState extends SocialStates{}
 
-class SocialCreatePostLoadingState extends SocialStates{}
+class SocialCreatePostWithoutPhotoLoadingState extends SocialStates{}
 
-class SocialCreatePostSuccessState extends SocialStates{}
+class SocialCreatePostWithoutPhotoSuccessState extends SocialStates{}
 
-class SocialCreatePostErrorState extends SocialStates{}
+class SocialCreatePostWithoutPhotoErrorState extends SocialStates{}
 
 class SocialCreatePostWithPhotoLoadingState extends SocialStates{}
 
@@ -74,3 +79,12 @@ class SocialCreatePostWithPhotoErrorState extends SocialStates{}
 class SocialRemovePostPhotos extends SocialStates{}
 
 class SocialLikePostPhotos extends SocialStates{}
+
+class SocialChangeIconDependOnFormField extends SocialStates{}
+
+class SocialUpdatePostProfilePhotoWhenUserUpdatedSuccessState extends SocialStates{}
+
+class SocialUpdatePostProfilePhotoWhenUserUpdatedErrorState extends SocialStates{}
+
+
+

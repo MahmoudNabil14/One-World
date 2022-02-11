@@ -59,7 +59,7 @@ class SocialRegisterScreen extends StatelessWidget {
                           height: 30.0,
                         ),
                         defaultFormField(
-                            text: 'Name',
+                            label: 'Name',
                             controller: nameController,
                             prefix: Icons.person,
                             validate: (String value) {
@@ -72,7 +72,7 @@ class SocialRegisterScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                            text: 'Email Address',
+                            label: 'Email Address',
                             controller: emailController,
                             prefix: Icons.email_outlined,
                             validate: (String value) {
@@ -86,7 +86,7 @@ class SocialRegisterScreen extends StatelessWidget {
                         ),
                         defaultFormField(
                             isPassword: cubit.isPassword,
-                            text: 'Password',
+                            label: 'Password',
                             controller: passwordController,
                             prefix: Icons.lock,
                             suffix: cubit.suffix,
@@ -103,7 +103,7 @@ class SocialRegisterScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                            text: 'Phone',
+                            label: 'Phone',
                             controller: phoneController,
                             prefix: Icons.phone,
                             validate: (String value) {

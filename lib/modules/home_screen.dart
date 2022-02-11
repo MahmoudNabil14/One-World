@@ -6,12 +6,19 @@ import 'package:social_app/layout/social_cubit/social_states.dart';
 import 'package:social_app/models/post_user_model.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  bool sendCommentBtnEnabled = false;
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SocialAddPostState) {
+          SocialCubit.get(context).postPhoto = null;
+        }
+      },
       builder: (context, state) {
         return BuildCondition(
           condition: SocialCubit.get(context).posts.isNotEmpty,
@@ -29,7 +36,30 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           fallback: (context) =>
-              const Center(child: CircularProgressIndicator()),
+//           state is SocialGetPostsSuccessState&&SocialCubit.get(context).posts.isEmpty
+//               ? Center(
+//                   child: Padding(
+//                     padding: const EdgeInsets.all(20.0),
+//                     child: Column(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       children: [
+//                         Text(
+//                           '''No Posts yet.
+// Try to add some posts by clicking on bottom tap 'posts' ''',
+//                           style: TextStyle(
+//                               color: Colors.grey[500], fontSize: 16.0),
+//                         ),
+//                         Icon(
+//                           Icons.post_add,
+//                           color: Colors.grey[500],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 )
+//               :
+             const Center(child: CircularProgressIndicator()),
         );
       },
     );
@@ -44,9 +74,8 @@ class HomeScreen extends StatelessWidget {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               elevation: 5.0,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8.0,
-                  bottom: 8.0,
+                padding: const EdgeInsets.all(
+                  8.0,
                 ),
                 child: Column(
                   children: [
@@ -54,7 +83,9 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 27.0,
-                          backgroundImage: NetworkImage(
+                          backgroundImage: SocialCubit.get(context).userModel!.uId==model.uId?NetworkImage(
+                            SocialCubit.get(context).userModel!.image,
+                          ):NetworkImage(
                             model.profileImage,
                           ),
                         ),
@@ -63,8 +94,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
@@ -108,6 +138,9 @@ class HomeScreen extends StatelessWidget {
                         width: double.infinity,
                         color: Colors.grey[300],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
                     ), //Separator
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,8 +155,7 @@ class HomeScreen extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1!
-                                    .copyWith(
-                                        height: 1.4, fontSize: 15.0),
+                                    .copyWith(height: 1.4, fontSize: 15.0),
                               ), //PostText
                               const SizedBox(
                                 height: 8.0,
@@ -151,38 +183,49 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            SocialCubit.get(context).likePosts(SocialCubit.get(context).postsID[index]);
+                            SocialCubit.get(context).likePosts(
+                                SocialCubit.get(context).postsID[index], index);
                           },
-                          child: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
-                            size: 28.0,
-                          ),
+                          child: SocialCubit.get(context).postsLikes[index] == 0
+                              ? const Icon(
+                                  Icons.favorite_border,
+                                  size: 28.0,
+                                  color: Colors.grey,
+                                )
+                              : const Icon(
+                                  Icons.favorite,
+                                  size: 28.0,
+                                  color: Colors.red,
+                                ),
                         ),
-                        const SizedBox(width: 5.0,),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         InkWell(
                           onTap: () {},
                           child: Text(
-                            '${SocialCubit.get(context).postsLikes[index]}',
+                            '${SocialCubit.get(context).postsLikes[index]} Likes',
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
-                                .copyWith(fontSize: 12,color: Colors.grey[700]),
+                                .copyWith(color: Colors.grey[700]),
                           ),
                         ),
                         const SizedBox(
                           width: 10.0,
                         ),
                         InkWell(
-                          onTap: (){},
+                          onTap: () {},
                           child: Row(
                             children: [
                               const Icon(
                                 Icons.message,
-                                color: Colors.green,
+                                color: Colors.grey,
                                 size: 28.0,
                               ),
-                              const SizedBox(width: 5.0,),
+                              const SizedBox(
+                                width: 5.0,
+                              ),
                               Text(
                                 '0 Comments',
                                 style: Theme.of(context)
@@ -205,7 +248,8 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          width: 5.0,),
+                          width: 5.0,
+                        ),
                         Text(
                           '0 Shares',
                           style: Theme.of(context)
@@ -216,8 +260,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 3.0, bottom: 10.0),
+                      padding: const EdgeInsets.only(top: 3.0, bottom: 10.0),
                       child: Container(
                         height: 1,
                         width: double.infinity,
@@ -233,9 +276,7 @@ class HomeScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 18.0,
                                 backgroundImage: NetworkImage(
-                                  SocialCubit.get(context)
-                                      .userModel!
-                                      .image,
+                                  SocialCubit.get(context).userModel!.image,
                                 ),
                               ),
                             ),
@@ -243,20 +284,39 @@ class HomeScreen extends StatelessWidget {
                               width: 10.0,
                             ),
                             Expanded(
-                              child: InkWell(
-                                onTap: () {},
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0),
-                                  child: Text(
-                                    'Have a comment? Write it ...',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2,
-                                  ),
-                                ),
-                              ),
+                                child: TextFormField(
+                                  maxLines: null,
+                              onChanged: (String value) {
+                                sendCommentBtnEnabled = value.isNotEmpty;
+                                if (value.length == 1) {
+                                  SocialCubit.get(context).emit(
+                                      SocialChangeIconDependOnFormField());
+                                } else if (value.isEmpty) {
+                                  SocialCubit.get(context).emit(
+                                      SocialChangeIconDependOnFormField());
+                                }
+                              },
+                              controller: controller,
+                              decoration: InputDecoration(
+                                  fillColor: Colors.grey,
+                                  hintStyle: TextStyle(
+                                      fontSize: 14.0, color: Colors.grey[500]),
+                                  hintText: 'Have a comment?? Write it now...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  )),
+                            )),
+                            const SizedBox(
+                              width: 10.0,
                             ),
+                            IconButton(
+                                onPressed: sendCommentBtnEnabled ? () {} : null,
+                                icon: Icon(
+                                  Icons.send,
+                                  color: sendCommentBtnEnabled
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                )),
                           ],
                         ),
                       ],

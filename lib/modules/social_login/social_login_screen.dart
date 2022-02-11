@@ -59,7 +59,7 @@ class SocialLoginScreen extends StatelessWidget {
                           height: 30.0,
                         ),
                         defaultFormField(
-                            text: 'Email Address',
+                            label: 'Email Address',
                             controller: emailController,
                             prefix: Icons.email_outlined,
                             validate: (String value) {
@@ -73,7 +73,7 @@ class SocialLoginScreen extends StatelessWidget {
                         ),
                         defaultFormField(
                             isPassword: loginCubit.isPassword,
-                            text: 'Password',
+                            label: 'Password',
                             controller: passwordController,
                             prefix: Icons.lock,
                             suffix: loginCubit.suffix,

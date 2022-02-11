@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/layout/social_cubit/social_cubit.dart';
+import 'package:social_app/layout/social_cubit/social_states.dart';
 
 void navigateAndEnd(context, Widget widget) {
   Navigator.pushAndRemoveUntil(context,
@@ -24,6 +26,18 @@ void showToast({required String message, required toastStates state}) {
       fontSize: 16.0);
 }
 
+Color? changeIconDependOnFormField(BuildContext context, TextEditingController controller, Color whenEmptyIcon, Color whenIsNotEmptyIcon){
+  if(controller.text.isEmpty) {
+    SocialCubit.get(context).emit(SocialChangeIconDependOnFormField());
+    return whenEmptyIcon;
+  } else if(controller.text.isNotEmpty){
+    SocialCubit.get(context).emit(SocialChangeIconDependOnFormField());
+    return whenIsNotEmptyIcon;
+  }else{
+    return null;
+  }
+}
+
 enum toastStates { SUCCESS, ERROR, WARNING }
 
 Color toastColor(toastStates state) {
@@ -43,10 +57,10 @@ Color toastColor(toastStates state) {
 }
 
 Widget defaultFormField({
-  required String text,
+  required String label,
   isPassword = false,
   required TextEditingController controller,
-  required IconData prefix,
+   IconData? prefix,
   IconData? suffix,
   Function? suffixPressed,
   required Function? validate,
@@ -64,7 +78,7 @@ Widget defaultFormField({
     },
     keyboardType: type,
     decoration: InputDecoration(
-      labelText: text,
+      labelText: label,
       prefixIcon: Icon(prefix),
       suffixIcon:
           IconButton(onPressed: () => suffixPressed!(), icon: Icon(suffix)),
@@ -89,11 +103,11 @@ AppBar defaultAppBar({
         titleSpacing: 5.0,
         actions: actions);
 
-Widget defaultTextButton({required String label, Function? onPressed}) =>
+Widget defaultTextButton({required String label, Function? onPressed, Color? color = Colors.white}) =>
     TextButton(
       child: Text(
         label.toUpperCase(),
-        style: const TextStyle(color: Colors.white, fontSize: 16.0),
+        style: TextStyle(color: color, fontSize: 16.0),
       ),
       onPressed: () => onPressed!(),
     );

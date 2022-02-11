@@ -11,17 +11,26 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is SocialEditProfileState){
+          SocialCubit.get(context).coverImage = null;
+          SocialCubit.get(context).profileImage = null;
+        }
+      },
       builder: (context, state) {
         var userModel = SocialCubit.get(context).userModel;
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              if(state is SocialUserUploadLoadingState)
-                const LinearProgressIndicator(minHeight: 5.0,),
-              if(state is SocialUserUploadLoadingState)
-                const SizedBox(height: 10.0,),
+              if (state is SocialUserUploadLoadingState)
+                const LinearProgressIndicator(
+                  minHeight: 5.0,
+                ),
+              if (state is SocialUserUploadLoadingState)
+                const SizedBox(
+                  height: 10.0,
+                ),
               SizedBox(
                 height: 230.0,
                 child: Stack(
@@ -75,7 +84,7 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Column(
                           children: [
                             Text(
@@ -92,7 +101,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Column(
                           children: [
                             Text(
@@ -109,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Column(
                           children: [
                             Text(
@@ -126,7 +135,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Column(
                           children: [
                             Text(
@@ -152,8 +161,12 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  OutlinedButton(onPressed: () {navigateTo(context, EditProfileScreen());}, child: const Icon(Icons.edit)
-                  ),
+                  OutlinedButton(
+                      onPressed: () {
+                        navigateTo(context, EditProfileScreen());
+                        SocialCubit.get(context).emit(SocialEditProfileState());
+                      },
+                      child: const Icon(Icons.edit)),
                 ],
               )
             ],

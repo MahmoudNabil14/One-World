@@ -3,38 +3,53 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
 import 'package:social_app/shared/components/components.dart';
-import 'package:intl/intl.dart' as intl;
 
 class PostScreen extends StatelessWidget {
-  const PostScreen({Key? key}) : super(key: key);
+  PostScreen({Key? key}) : super(key: key);
 
-  bool isRTL(String text) {
-    return intl.Bidi.detectRtlDirectionality(text);
-  }
+  bool createPostBtnEnabled = false;
+  var postTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var postTextController = TextEditingController();
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SocialAddPostState) {
+          SocialCubit.get(context).postPhoto = null;
+          print(SocialCubit.get(context).postPhoto);
+        }
+      },
       builder: (context, state) {
+        var postPhoto = SocialCubit.get(context).postPhoto;
         return Scaffold(
           appBar: defaultAppBar(
             context: context,
             title: "Create Post",
             actions: [
-              defaultTextButton(
-                  label: "Create",
-                  onPressed: () {
-                    if (SocialCubit.get(context).postPhoto != null) {
-                      SocialCubit.get(context)
-                          .createPostWithPhotos(text: postTextController.text);
-                    } else {
-                      SocialCubit.get(context).createPostWithoutPhotos(
-                          text: postTextController.text);
-                    }
-                    postTextController.text = '';
-                  })
+              postPhoto != null || postTextController.text.isNotEmpty
+                  ? defaultTextButton(
+                      label: "Create",
+                      onPressed: () {
+                        if (postPhoto != null) {
+                          SocialCubit.get(context).createPostWithPhotos(
+                              text: postTextController.text);
+                        } else {
+                          SocialCubit.get(context).createPostWithoutPhotos(
+                              text: postTextController.text);
+                        }
+                        Navigator.pop(context);
+                        postTextController.text = '';
+                        postPhoto = null;
+                      })
+                  : Center(
+                      child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text('Create'.toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 16.0,
+                          )),
+                    )),
             ],
           ),
           body: CustomScrollView(
@@ -47,12 +62,12 @@ class PostScreen extends StatelessWidget {
                       left: 14.0, top: 14.0, right: 14.0, bottom: 5.0),
                   child: Column(
                     children: [
-                      if (state is SocialCreatePostLoadingState ||
+                      if (state is SocialCreatePostWithoutPhotoLoadingState ||
                           state is SocialCreatePostWithPhotoLoadingState)
                         const LinearProgressIndicator(
                           minHeight: 5.0,
                         ),
-                      if (state is SocialCreatePostLoadingState ||
+                      if (state is SocialCreatePostWithoutPhotoLoadingState ||
                           state is SocialCreatePostWithPhotoLoadingState)
                         const SizedBox(
                           height: 10.0,
@@ -81,32 +96,35 @@ class PostScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: TextFormField(
-                          textDirection: isRTL(postTextController.text)
-                              ? TextDirection.rtl
-                              : TextDirection.ltr,
+                          onChanged: (String value) {
+                            createPostBtnEnabled = value.isNotEmpty;
+                            if (value.length == 1) {
+                              SocialCubit.get(context)
+                                  .emit(SocialChangeIconDependOnFormField());
+                            } else if (value.isEmpty) {
+                              SocialCubit.get(context)
+                                  .emit(SocialChangeIconDependOnFormField());
+                            }
+                          },
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                          ),
                           controller: postTextController,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'What is on your mind?'),
                         ),
                       ),
-                      if (SocialCubit.get(context).postPhoto != null)
+                      if (postPhoto != null)
                         Stack(
                           alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              height: 250.0,
+                              height: 300.0,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4.0),
                                 image: DecorationImage(
-                                    image: FileImage(
-                                        SocialCubit.get(context).postPhoto!),
+                                    image: FileImage(postPhoto!),
                                     fit: BoxFit.cover),
                               ),
                             ),
@@ -124,7 +142,7 @@ class PostScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                      if (SocialCubit.get(context).postPhoto != null)
+                      if (postPhoto != null)
                         const SizedBox(
                           height: 10.0,
                         ),
@@ -165,5 +183,3 @@ class PostScreen extends StatelessWidget {
     );
   }
 }
-
-
