@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
 
@@ -15,16 +14,16 @@ void navigateTo(context, Widget widget) {
   );
 }
 
-void showToast({required String message, required toastStates state}) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 5,
-      backgroundColor: toastColor(state),
-      textColor: Colors.white,
-      fontSize: 16.0);
-}
+// void showToast({required String message, required toastStates state}) {
+//   Toast.showToast(
+//       msg: message,
+//       toastLength: Toast.LENGTH_SHORT,
+//       gravity: ToastGravity.CENTER,
+//       timeInSecForIosWeb: 5,
+//       backgroundColor: toastColor(state),
+//       textColor: Colors.white,
+//       fontSize: 16.0);
+// }
 
 Color? changeIconDependOnFormField(BuildContext context, TextEditingController controller, Color whenEmptyIcon, Color whenIsNotEmptyIcon){
   if(controller.text.isEmpty) {
@@ -61,8 +60,8 @@ Widget defaultFormField({
   isPassword = false,
   required TextEditingController controller,
    IconData? prefix,
-  IconData? suffix,
-  Function? suffixPressed,
+  IconData? suffix = null,
+  Function? suffixPressed = null,
   required Function? validate,
   Function? onSubmit,
   required TextInputType type,
@@ -80,8 +79,8 @@ Widget defaultFormField({
     decoration: InputDecoration(
       labelText: label,
       prefixIcon: Icon(prefix),
-      suffixIcon:
-          IconButton(onPressed: () => suffixPressed!(), icon: Icon(suffix)),
+      suffixIcon:suffix == null ? null :
+          IconButton(onPressed: () => suffixPressed!(), icon: Icon(suffix,)),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
     ),
   );

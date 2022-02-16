@@ -86,5 +86,7 @@ class SocialUpdatePostProfilePhotoWhenUserUpdatedSuccessState extends SocialStat
 
 class SocialUpdatePostProfilePhotoWhenUserUpdatedErrorState extends SocialStates{}
 
+class SocialSignOutState extends SocialStates{}
+
 
 

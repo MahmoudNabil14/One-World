@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_cubit/social_cubit.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
 import 'package:social_app/modules/edit_profile_screen.dart';
+import 'package:social_app/modules/social_login/social_login_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/components/constants.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -12,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {
-        if(state is SocialEditProfileState){
+        if (state is SocialEditProfileState) {
           SocialCubit.get(context).coverImage = null;
           SocialCubit.get(context).profileImage = null;
         }
@@ -168,7 +171,17 @@ class SettingsScreen extends StatelessWidget {
                       },
                       child: const Icon(Icons.edit)),
                 ],
-              )
+              ),
+              OutlinedButton(
+                  onPressed: () {
+                    CacheHelper.removeData(key: 'uId')
+                        .then((value) {
+                      if (value) {
+                        navigateAndEnd(context, SocialLoginScreen());
+                      }
+                    });
+                  },
+                  child: Text('Sign Out'.toUpperCase()))
             ],
           ),
         );

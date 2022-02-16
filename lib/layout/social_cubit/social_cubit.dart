@@ -308,16 +308,8 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  Future<void>updatePostPhotoWhenProfilePhotoUpdated() async{
-    var value = await FirebaseFirestore.instance.collection('Posts').get();
-      for (int i = 0; i < value.docs.length; i++) {
-        if (value.docs[i].get('uId') == userModel!.uId) {
-          await value.docs[i].reference.update({'profileImage': profileImageUrl});
-          if (value.docs[i].get('profileImage') == profileImageUrl) {
-            print('done');
-          }
-          emit(SocialUpdatePostProfilePhotoWhenUserUpdatedSuccessState());
-        }
-      }
+  void signOut (String uId){
+    uId = "";
+    emit(SocialSignOutState());
   }
 }
