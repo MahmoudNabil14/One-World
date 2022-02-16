@@ -128,17 +128,20 @@ class PostScreen extends StatelessWidget {
                                     fit: BoxFit.cover),
                               ),
                             ),
-                            CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              radius: 20.0,
-                              child: IconButton(
-                                  onPressed: () {
-                                    SocialCubit.get(context).removePostPhotos();
-                                  },
-                                  icon: const Icon(
-                                    Icons.close,
-                                    size: 22.0,
-                                  )),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                radius: 20.0,
+                                child: IconButton(
+                                    onPressed: () {
+                                      SocialCubit.get(context).removePostPhotos();
+                                    },
+                                    icon: const Icon(
+                                      Icons.close,
+                                      size: 22.0,
+                                    )),
+                              ),
                             )
                           ],
                         ),

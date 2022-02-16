@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:social_app/layout/social_cubit/social_states.dart';
+import 'package:social_app/models/message_model.dart';
 import 'package:social_app/models/post_user_model.dart';
 import 'package:social_app/models/social_user_model.dart';
 import 'package:social_app/modules/chats_screen.dart';
@@ -16,7 +17,6 @@ import 'package:social_app/shared/components/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialStates> {
-  bool enabled = true;
   late TextEditingController controller;
 
   SocialCubit() : super(SocialInitialState());
@@ -61,6 +61,9 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   void changeBottomNav(index) {
+    if (index == 1) {
+      getAllUsers();
+    }
     if (index == 2) {
       emit(SocialAddPostState());
     } else {
@@ -255,6 +258,8 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   List<PostModel> posts = [];
+  List<MessageModel> messages = [];
+  List<SocialUserModel> allUsers = [];
   List<String> postsID = [];
   List<int> postsLikes = [];
 
@@ -272,6 +277,22 @@ class SocialCubit extends Cubit<SocialStates> {
     }).catchError((error) {
       emit(SocialGetPostsErrorState(error.toString()));
     });
+  }
+
+  void getAllUsers() {
+    if (allUsers.isEmpty) {
+      emit(SocialGetAllUsersLoadingState());
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        for (var element in value.docs) {
+          if (element.data()['uId'] != userModel!.uId) {
+            allUsers.add(SocialUserModel.fromJson(element.data()));
+          }
+        }
+        emit(SocialGetAllUsersSuccessState());
+      }).catchError((error) {
+        emit(SocialGetAllUsersErrorState(error.toString()));
+      });
+    }
   }
 
   void likePosts(String postID, index) {
@@ -308,16 +329,60 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  Future<void>updatePostPhotoWhenProfilePhotoUpdated() async{
-    var value = await FirebaseFirestore.instance.collection('Posts').get();
-      for (int i = 0; i < value.docs.length; i++) {
-        if (value.docs[i].get('uId') == userModel!.uId) {
-          await value.docs[i].reference.update({'profileImage': profileImageUrl});
-          if (value.docs[i].get('profileImage') == profileImageUrl) {
-            print('done');
-          }
-          emit(SocialUpdatePostProfilePhotoWhenUserUpdatedSuccessState());
-        }
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String text,
+  }) {
+    MessageModel messageModel = MessageModel(
+        dateTime: dateTime,
+        receiverId: receiverId,
+        text: text,
+        senderId: userModel!.uId);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SocialSendMessageSuccessState());
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState());
+    });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(userModel!.uId)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(SocialSendMessageSuccessState());
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState());
+    });
+  }
+
+  void getMessages({
+    required String receiverId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+          messages = [];
+      for (var element in event.docs) {
+        messages.add(MessageModel.fromJson(element.data()));
       }
+      emit(SocialGetMessagesSuccessState());
+    });
   }
 }
