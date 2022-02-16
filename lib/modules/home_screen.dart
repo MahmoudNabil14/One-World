@@ -36,29 +36,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           fallback: (context) =>
-//           state is SocialGetPostsSuccessState&&SocialCubit.get(context).posts.isEmpty
-//               ? Center(
-//                   child: Padding(
-//                     padding: const EdgeInsets.all(20.0),
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       crossAxisAlignment: CrossAxisAlignment.center,
-//                       children: [
-//                         Text(
-//                           '''No Posts yet.
-// Try to add some posts by clicking on bottom tap 'posts' ''',
-//                           style: TextStyle(
-//                               color: Colors.grey[500], fontSize: 16.0),
-//                         ),
-//                         Icon(
-//                           Icons.post_add,
-//                           color: Colors.grey[500],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 )
-//               :
              const Center(child: CircularProgressIndicator()),
         );
       },

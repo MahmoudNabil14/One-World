@@ -102,11 +102,20 @@ AppBar defaultAppBar({
         titleSpacing: 5.0,
         actions: actions);
 
-Widget defaultTextButton({required String label, Function? onPressed, Color? color = Colors.white}) =>
-    TextButton(
+Widget defaultTextButton({required String label, Function? onPressed, Color? color = Colors.white}) => TextButton(
       child: Text(
         label.toUpperCase(),
         style: TextStyle(color: color, fontSize: 16.0),
       ),
       onPressed: () => onPressed!(),
     );
+
+void scrollToEndOfList(ScrollController scrollController){
+  WidgetsBinding.instance!.addPostFrameCallback((_) {
+    if (scrollController.hasClients) {
+      scrollController
+          .jumpTo(scrollController.position.maxScrollExtent);
+    }
+  });
+}//Sent Messages
+
