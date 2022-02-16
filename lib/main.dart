@@ -9,6 +9,7 @@ import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
+import 'package:social_app/shared/themes.dart';
 
 Future<void> onBackgroundMessageHandler(RemoteMessage message)async {
 
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create:(context)=> SocialCubit()..getUserData()..getPosts())
       ],
       child: MaterialApp(
+        theme: lightTheme,
         debugShowCheckedModeBanner: false,
         home: startWidget,
       ),

@@ -24,11 +24,12 @@ class PostScreen extends StatelessWidget {
         return Scaffold(
           appBar: defaultAppBar(
             context: context,
-            title: "Create Post",
+            title: "Create New Post",
             actions: [
               postPhoto != null || postTextController.text.isNotEmpty
                   ? defaultTextButton(
                       label: "Create",
+                      color: Colors.blue,
                       onPressed: () {
                         if (postPhoto != null) {
                           SocialCubit.get(context).createPostWithPhotos(

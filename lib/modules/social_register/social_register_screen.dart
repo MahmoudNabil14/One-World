@@ -33,7 +33,8 @@ class SocialRegisterScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = SocialRegisterCubit.get(context);
           return Scaffold(
-            appBar: AppBar(),
+            backgroundColor: Colors.white,
+            appBar: AppBar(elevation: 0.0,backgroundColor: Colors.white,leading: IconButton(icon: const Icon(Icons.arrow_back_ios,color: Colors.blue,), onPressed: () {Navigator.pop(context);},),),
             body: Center(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -48,11 +49,11 @@ class SocialRegisterScreen extends StatelessWidget {
                           'Register',
                           style: Theme.of(context)
                               .textTheme
-                              .headline4!
+                              .headline3!
                               .copyWith(color: Colors.black),
                         ),
                         Text(
-                          'Communication is now easier register now to try it!!',
+                          'All you imaginations is right there. Try it now',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         const SizedBox(
