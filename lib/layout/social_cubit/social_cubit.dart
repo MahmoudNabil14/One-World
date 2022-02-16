@@ -38,9 +38,9 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   List<String> appBarTitles = [
-    'Home',
+    'One World',
     'Chats',
-    'Add Post',
+    'Add New Post',
     'Users',
     'Settings'
   ];

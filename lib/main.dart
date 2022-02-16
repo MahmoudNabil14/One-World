@@ -7,6 +7,7 @@ import 'package:social_app/modules/social_login/social_login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
+import 'package:social_app/shared/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create:(context)=> SocialCubit()..getUserData()..getPosts())
       ],
       child: MaterialApp(
+        theme: lightTheme,
         debugShowCheckedModeBanner: false,
         home: startWidget,
       ),
