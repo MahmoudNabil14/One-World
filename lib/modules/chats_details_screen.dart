@@ -33,7 +33,10 @@ class ChatDetailsScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 22.0,
-                      backgroundImage: NetworkImage(receiverUserModel.image),
+                      backgroundImage: receiverUserModel.image.contains("https")
+                          ? NetworkImage(receiverUserModel.image)
+                          : AssetImage(receiverUserModel.image)
+                              as ImageProvider,
                     ),
                     const SizedBox(
                       width: 5.0,
@@ -155,7 +158,6 @@ class ChatDetailsScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextFormField(
-
                             style: const TextStyle(color: Colors.white),
                             controller: textController,
                             keyboardType: TextInputType.text,

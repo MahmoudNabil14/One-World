@@ -10,7 +10,6 @@ import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialRegisterScreen extends StatefulWidget {
-
   SocialRegisterScreen({Key? key}) : super(key: key);
 
   @override
@@ -27,8 +26,6 @@ class _SocialRegisterScreenState extends State<SocialRegisterScreen> {
   var phoneController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
-
-  var radioValue ;
 
   @override
   Widget build(BuildContext context) {
@@ -146,25 +143,32 @@ class _SocialRegisterScreenState extends State<SocialRegisterScreen> {
                         children: [
                           const Text(
                             "Gender:",
-                            style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
                           Expanded(
                               child: RadioListTile(
                                   title: const Text('Male'),
-                                  value: 1,
-                                  groupValue: radioValue,
+                                  value: 'male',
+                                  groupValue: SocialRegisterCubit.get(context)
+                                      .radioValue,
                                   onChanged: (newValue) {
-                                    SocialRegisterCubit.get(context).changeRadioButton(radioValue, newValue);
+                                    SocialRegisterCubit.get(context)
+                                        .radioValue = newValue as String;
+                                    SocialRegisterCubit.get(context)
+                                        .emit(SocialRadioButtonSelectedState());
                                   })),
                           Expanded(
                               child: RadioListTile(
                                   title: const Text('Female'),
-                                  value: 2,
-                                  groupValue:radioValue,
+                                  value: 'female',
+                                  groupValue: SocialRegisterCubit.get(context)
+                                      .radioValue,
                                   onChanged: (newValue) {
-                                    setState(() {
-                                      radioValue= newValue;
-                                    });
+                                    SocialRegisterCubit.get(context)
+                                        .radioValue = newValue as String;
+                                    SocialRegisterCubit.get(context)
+                                        .emit(SocialRadioButtonSelectedState());
                                   })),
                         ],
                       ),
@@ -187,13 +191,14 @@ class _SocialRegisterScreenState extends State<SocialRegisterScreen> {
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                   onPressed: () {
-                                    SocialRegisterCubit.get(context).clearButton(
-                                        controller1: nameController,
-                                        controller2: emailController,
-                                        controller3: passwordController,
-                                        controller4: phoneController,
-                                        radioValue: radioValue,
-                                    );
+                                    nameController.text = '';
+                                    emailController.text = '';
+                                    passwordController.text = '';
+                                    phoneController.text = '';
+                                    SocialRegisterCubit.get(context)
+                                        .radioValue = '';
+                                    SocialRegisterCubit.get(context)
+                                        .emit(SocialClearButtonState());
                                   }),
                             ),
                           ),
@@ -220,11 +225,12 @@ class _SocialRegisterScreenState extends State<SocialRegisterScreen> {
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
                                       cubit.userRegister(
-                                          name: nameController.text,
-                                          email: emailController.text,
-                                          password: passwordController.text,
-                                          phone: phoneController.text,
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        phone: phoneController.text,
                                       );
+                                      SocialCubit.get(context).currentIndex = 0;
                                     }
                                   },
                                   child: Text(

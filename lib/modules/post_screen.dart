@@ -38,6 +38,7 @@ class PostScreen extends StatelessWidget {
                           SocialCubit.get(context).createPostWithoutPhotos(
                               text: postTextController.text);
                         }
+                        SocialCubit.get(context).currentIndex = 0;
                         Navigator.pop(context);
                         postTextController.text = '';
                         postPhoto = null;
@@ -77,9 +78,9 @@ class PostScreen extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 27.0,
-                            backgroundImage: NetworkImage(
+                            backgroundImage: SocialCubit.get(context).userModel!.image.contains("https")?NetworkImage(
                               SocialCubit.get(context).userModel!.image,
-                            ),
+                            ):AssetImage(SocialCubit.get(context).userModel!.image)as ImageProvider,
                           ),
                           const SizedBox(
                             width: 12.0,

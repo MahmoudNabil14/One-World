@@ -7,17 +7,19 @@ class SocialUserModel {
   late String cover;
   late String bio;
   late bool isEmailVerified;
+  var gender;
 
-  SocialUserModel(
-     this.name,
-     this.email,
-     this.phone,
-     this.uId,
-     this.image,
-     this.cover,
-     this.bio,
-     this.isEmailVerified,
-  );
+  SocialUserModel({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.uId,
+    required this.image,
+    required this.cover,
+    required this.bio,
+    required this.isEmailVerified,
+    this.gender,
+  });
 
   SocialUserModel.fromJson(Map<String, dynamic> json){
     name= json['name'];
@@ -28,6 +30,7 @@ class SocialUserModel {
     cover= json['cover'];
     bio= json['bio'];
     isEmailVerified= json['isEmailVerified'];
+    gender= json['gender'];
   }
 
   Map<String,dynamic> toMap(){
@@ -40,6 +43,7 @@ class SocialUserModel {
       'cover':cover,
       'bio':bio,
       'isEmailVerified':isEmailVerified,
+      'gender':gender,
     };
   }
 

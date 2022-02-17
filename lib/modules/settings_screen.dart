@@ -49,10 +49,14 @@ class SettingsScreen extends StatelessWidget {
                               topLeft: Radius.circular(4.0),
                               topRight: Radius.circular(4.0)),
                           image: DecorationImage(
-                              image: NetworkImage(
-                                userModel!.cover,
-                              ),
-                              fit: BoxFit.cover),
+                              image: userModel!.cover.contains('https')
+                                  ? NetworkImage(userModel.cover)
+                                  : AssetImage(
+                                userModel.cover,
+                              ) as ImageProvider,
+                            fit: userModel.cover.contains('https')
+                                ?BoxFit.cover:BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
@@ -61,11 +65,12 @@ class SettingsScreen extends StatelessWidget {
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       child: CircleAvatar(
-                        radius: 64.0,
-                        backgroundImage: NetworkImage(
-                          userModel.image,
-                        ),
-                      ),
+                          radius: 64.0,
+                          backgroundImage: userModel.image.contains('https')
+                              ? NetworkImage(userModel.image)
+                              : AssetImage(
+                                  userModel.image,
+                                ) as ImageProvider),
                     ),
                   ],
                 ),
@@ -174,8 +179,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               OutlinedButton(
                   onPressed: () {
-                    CacheHelper.removeData(key: 'uId')
-                        .then((value) {
+                    CacheHelper.removeData(key: 'uId').then((value) {
                       if (value) {
                         navigateAndEnd(context, SocialLoginScreen());
                       }

@@ -26,14 +26,19 @@ class HomeScreen extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  if(state is SocialCreatePostWithoutPhotoLoadingState ||state is SocialCreatePostWithPhotoLoadingState)
+                  if (state is SocialCreatePostWithoutPhotoLoadingState ||
+                      state is SocialCreatePostWithPhotoLoadingState)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: const [
-                          SizedBox(height: 5.0,),
+                          SizedBox(
+                            height: 5.0,
+                          ),
                           LinearProgressIndicator(),
-                          SizedBox(height: 10.0,),
+                          SizedBox(
+                            height: 10.0,
+                          ),
                         ],
                       ),
                     ),
@@ -77,12 +82,12 @@ class HomeScreen extends StatelessWidget {
                           backgroundImage:
                               SocialCubit.get(context).userModel!.uId ==
                                       model.uId
-                                  ? NetworkImage(
+                                  ?SocialCubit.get(context).userModel!.image.contains('https') ? NetworkImage(
                                       SocialCubit.get(context).userModel!.image,
-                                    )
-                                  : NetworkImage(
+                                    ):AssetImage(SocialCubit.get(context).userModel!.image)as ImageProvider
+                                  : model.profileImage.contains("https")?NetworkImage(
                                       model.profileImage,
-                                    ),
+                                    ):AssetImage(model.profileImage) as ImageProvider
                         ),
                         const SizedBox(
                           width: 12.0,
@@ -260,9 +265,9 @@ class HomeScreen extends StatelessWidget {
                               onTap: () {},
                               child: CircleAvatar(
                                 radius: 18.0,
-                                backgroundImage: NetworkImage(
+                                backgroundImage:SocialCubit.get(context).userModel!.image.contains("https")?NetworkImage(
                                   SocialCubit.get(context).userModel!.image,
-                                ),
+                                ):AssetImage( SocialCubit.get(context).userModel!.image) as ImageProvider
                               ),
                             ),
                             const SizedBox(

@@ -64,14 +64,14 @@ Widget defaultFormField({
   Function? suffixPressed = null,
   required Function? validate,
   Function? onSubmit,
+  Function? onChanged,
   required TextInputType type,
 }) {
   return TextFormField(
     controller: controller,
     obscureText: isPassword,
-    onFieldSubmitted: (value) {
-      return onSubmit!(value);
-    },
+    onFieldSubmitted: (value) => onSubmit!(value),
+    onChanged: (String value)=> onChanged!(value),
     validator: (value) {
       return validate!(value);
     },

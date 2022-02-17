@@ -13,46 +13,74 @@ class EditProfileScreen extends StatelessWidget {
   var bioController = TextEditingController();
   var phoneController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+  bool updateUserBtnEnabled =false ;
+
   @override
   Widget build(BuildContext context) {
+    var editUserModel = SocialCubit.get(context).userModel;
+    nameController.text = editUserModel!.name;
+    bioController.text = editUserModel.bio;
+    phoneController.text = editUserModel.phone;
+
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state){},
-      builder: (context, state){
-        var editUserModel = SocialCubit.get(context).userModel;
+      listener: (context, state) {},
+      builder: (context, state) {
         File? coverImage = SocialCubit.get(context).coverImage;
         var profileImage = SocialCubit.get(context).profileImage;
-        nameController.text = editUserModel!.name;
-        bioController.text = editUserModel.bio;
-        phoneController.text = editUserModel.phone;
 
         return Scaffold(
             appBar: defaultAppBar(
               context: context,
               title: 'Edit Profile',
               actions: [
-                defaultTextButton(label: "Update", onPressed: ()  {
-
-                  if(profileImage != null && coverImage ==null) {
-                    SocialCubit.get(context).uploadProfileImage(bio: bioController.text,name: nameController.text, phone: phoneController.text,context: context);
-                    Navigator.pop(context);
-                  }
-                  else if(coverImage !=null && profileImage ==null) {
-                    SocialCubit.get(context).uploadCoverImage(bio: bioController.text,name: nameController.text, phone: phoneController.text,context: context);
-                    Navigator.pop(context);
-                  }
-                  else if(coverImage !=null && profileImage !=null){
-                    SocialCubit.get(context).uploadProfileImage(bio: bioController.text,name: nameController.text, phone: phoneController.text,context: context);
-                    SocialCubit.get(context).uploadCoverImage(bio: bioController.text,name: nameController.text, phone: phoneController.text, context: context);
-                    Navigator.pop(context);
-                  }
-                  else{
-                    SocialCubit.get(context).updateUser(
-                        name: nameController.text,
-                        bio: bioController.text,
-                        phone: phoneController.text);
-                  }
-                  if (formKey.currentState!.validate()){}
-                }),
+                updateUserBtnEnabled || profileImage!=null ||coverImage!=null?
+                defaultTextButton(
+                    color: Colors.blue,
+                    label: "Update",
+                    onPressed: () {
+                      if (profileImage != null && coverImage == null) {
+                        SocialCubit.get(context).uploadProfileImage(
+                            bio: bioController.text,
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            context: context);
+                        Navigator.pop(context);
+                      } else if (coverImage != null && profileImage == null) {
+                        SocialCubit.get(context).uploadCoverImage(
+                            bio: bioController.text,
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            context: context);
+                        Navigator.pop(context);
+                      } else if (coverImage != null && profileImage != null) {
+                        SocialCubit.get(context).uploadProfileImage(
+                            bio: bioController.text,
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            context: context);
+                        SocialCubit.get(context).uploadCoverImage(
+                            bio: bioController.text,
+                            name: nameController.text,
+                            phone: phoneController.text,
+                            context: context);
+                        Navigator.pop(context);
+                      } else {
+                        SocialCubit.get(context).updateUser(
+                            name: nameController.text,
+                            bio: bioController.text,
+                            phone: phoneController.text);
+                      }
+                      if (formKey.currentState!.validate()) {}
+                    }
+                ):Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text('Update'.toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 16.0,
+                          )),
+                    )),
                 const SizedBox(
                   width: 10.0,
                 ),
@@ -80,10 +108,13 @@ class EditProfileScreen extends StatelessWidget {
                                     borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(4.0),
                                         topRight: Radius.circular(4.0)),
-                                        image: DecorationImage(
-                                        image: coverImage == null ? NetworkImage(
-                                          editUserModel.cover,
-                                        ): FileImage(coverImage) as ImageProvider ,
+                                    image: DecorationImage(
+                                        image: coverImage == null
+                                            ? NetworkImage(
+                                                editUserModel.cover,
+                                              )
+                                            : FileImage(coverImage)
+                                                as ImageProvider,
                                         fit: BoxFit.cover),
                                   ),
                                 ),
@@ -91,7 +122,12 @@ class EditProfileScreen extends StatelessWidget {
                                   radius: 20.0,
                                   backgroundColor: Colors.blue,
                                   child: IconButton(
-                                      onPressed: () {SocialCubit.get(context).getCoverImage(bio: bioController.text,name: nameController.text, phone: phoneController.text);},
+                                      onPressed: () {
+                                        SocialCubit.get(context).getCoverImage(
+                                            bio: bioController.text,
+                                            name: nameController.text,
+                                            phone: phoneController.text);
+                                      },
                                       icon: const Icon(
                                         Icons.camera,
                                         size: 22.0,
@@ -106,19 +142,27 @@ class EditProfileScreen extends StatelessWidget {
                               CircleAvatar(
                                 radius: 68.0,
                                 backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 child: CircleAvatar(
                                   radius: 64.0,
-                                  backgroundImage: profileImage == null ? NetworkImage(
-                                    editUserModel.image,
-                                  ): FileImage(profileImage) as ImageProvider,
+                                  backgroundImage: profileImage == null
+                                      ? AssetImage(
+                                          editUserModel.image,
+                                        )
+                                      : FileImage(profileImage)
+                                          as ImageProvider,
                                 ),
                               ),
                               CircleAvatar(
                                 radius: 20.0,
                                 backgroundColor: Colors.blue,
                                 child: IconButton(
-                                    onPressed: () {SocialCubit.get(context).getProfileImage(bio: bioController.text,name: nameController.text, phone: phoneController.text);},
+                                    onPressed: () {
+                                      SocialCubit.get(context).getProfileImage(
+                                          bio: bioController.text,
+                                          name: nameController.text,
+                                          phone: phoneController.text);
+                                    },
                                     icon: const Icon(
                                       Icons.camera,
                                       size: 22.0,
@@ -137,8 +181,19 @@ class EditProfileScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           defaultFormField(
-                              onSubmit: (value){},
-                              suffixPressed: (){},
+                              onSubmit: (value) {},
+                              onChanged: (value){
+                                if(nameController.text != editUserModel.name) {
+                                  updateUserBtnEnabled = true;
+                                }
+                                if(nameController.text == editUserModel.name){
+                                  updateUserBtnEnabled = false;
+                                }
+                                if(value.length == editUserModel.name.length+1 || value.length == editUserModel.name.length-1 ||value.length == editUserModel.name.length) {
+                                  SocialCubit.get(context).emit(SocialChangeIconDependOnFormField());
+                                }
+                              },
+                              suffixPressed: () {},
                               label: 'Name',
                               controller: nameController,
                               prefix: Icons.person,
@@ -150,46 +205,62 @@ class EditProfileScreen extends StatelessWidget {
                                 }
                               },
                               type: TextInputType.name),
-
                           const SizedBox(
                             height: 10.0,
                           ),
-
                           defaultFormField(
-                              onSubmit: (value){},
-                              suffixPressed: (){},
+                              onSubmit: (value) {},
+                              onChanged: (value){
+                                if(bioController.text != editUserModel.bio) {
+                                  updateUserBtnEnabled = true;
+                                }
+                                if(bioController.text == editUserModel.bio){
+                                  updateUserBtnEnabled = false;
+                                }
+                                if(value.length == editUserModel.bio.length+1 || value.length == editUserModel.bio.length-1 ||value.length == editUserModel.bio.length) {
+                                  SocialCubit.get(context).emit(SocialChangeIconDependOnFormField());
+                                }
+                              },
+                              suffixPressed: () {},
                               label: 'Bio',
                               controller: bioController,
                               prefix: Icons.info,
-                              validate: (String value){
-                                if(value.isEmpty){
+                              validate: (String value) {
+                                if (value.isEmpty) {
                                   return 'Bio mustn\'t be empty';
                                 } else {
                                   return null;
                                 }
                               },
                               type: TextInputType.text),
-
                           const SizedBox(
                             height: 10.0,
                           ),
-
                           defaultFormField(
-                              onSubmit: (value){
+                              onSubmit: (value) {},
+                              onChanged: (String value){
+                                if(phoneController.text != editUserModel.phone) {
+                                  updateUserBtnEnabled = true;
+                                }
+                                if(phoneController.text == editUserModel.phone){
+                                  updateUserBtnEnabled = false;
+                                }
+                                if(value.length == editUserModel.phone.length+1 || value.length == editUserModel.phone.length-1 ||value.length == editUserModel.phone.length) {
+                                  SocialCubit.get(context).emit(SocialChangeIconDependOnFormField());
+                                }
                               },
-                              suffixPressed: (){},
+                              suffixPressed: () {},
                               label: 'Phone Number',
                               controller: phoneController,
                               prefix: Icons.phone,
-                              validate: (String value){
-                                if(value.isEmpty){
+                              validate: (String value) {
+                                if (value.isEmpty) {
                                   return 'Phone Number mustn\'t be empty';
                                 } else {
                                   return null;
                                 }
                               },
                               type: TextInputType.phone),
-
                         ],
                       ),
                     ),

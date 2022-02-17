@@ -12,6 +12,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
 
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
   bool isPassword = true;
+  var radioValue;
 
   IconData suffix = Icons.visibility_outlined;
 
@@ -19,12 +20,13 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
       {required String name,
       required String email,
       required String password,
-      required String phone}) {
+      required String phone,
+      }) {
     emit(SocialRegisterLoadingState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      userCreate(name: name, email: email, phone: phone, uId: value.user!.uid);
+      userCreate(name: name, email: email, phone: phone, uId: value.user!.uid,);
     }).catchError((error) {
       print(error.toString());
       emit(SocialRegisterErrorState(error.toString()));
@@ -38,14 +40,15 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     required String uId,
   }) {
     SocialUserModel userModel = SocialUserModel(
-        name,
-        email,
-        phone,
-        uId,
-        'https://image.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg',
-        'https://image.freepik.com/free-photo/valentines-day-still-life-design_23-2149246294.jpg?w=1380',
-        'write your bio...',
-        false);
+        name: name,
+        email: email,
+        phone:  phone,
+        uId: uId,
+        image:radioValue == 'female'?'assets/images/female_profile.png':'assets/images/male_profile.png',
+        cover: 'assets/images/cover.png',
+        bio: 'write your bio...',
+        isEmailVerified:  false,
+        gender: radioValue);
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
@@ -64,19 +67,17 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     emit(SocialChangeRegisterSuffixState());
   }
 
-  void changeRadioButton(radioValue, newValue ){
-    radioValue = newValue;
-    print(radioValue);
-    emit(SocialRadioButtonSelectedState());
-  }
-
-  void clearButton({TextEditingController? controller1,TextEditingController? controller2,TextEditingController? controller3,TextEditingController? controller4, String? radioValue}){
-    controller1!.text= '';
-    controller2!.text= '';
-    controller3!.text= '';
-    controller4!.text= '';
+  void clearButton(
+      {TextEditingController? controller1,
+      TextEditingController? controller2,
+      TextEditingController? controller3,
+      TextEditingController? controller4,
+      String? radioValue}) {
+    controller1!.text = '';
+    controller2!.text = '';
+    controller3!.text = '';
+    controller4!.text = '';
     radioValue = '';
     emit(SocialClearButtonState());
   }
-
 }

@@ -171,14 +171,14 @@ class SocialCubit extends Cubit<SocialStates> {
     required String phone,
   }) async {
     SocialUserModel updateUserModel = SocialUserModel(
-        name,
-        userModel!.email,
-        phone,
-        userModel!.uId,
-        profileImageUrl.isEmpty ? userModel!.image : profileImageUrl,
-        coverImageUrl.isEmpty ? userModel!.cover : coverImageUrl,
-        bio,
-        false);
+        name: name,
+        email:userModel!.email,
+        phone:phone,
+        uId:userModel!.uId,
+        image:profileImageUrl.isEmpty ? userModel!.image : profileImageUrl,
+        cover:coverImageUrl.isEmpty ? userModel!.cover : coverImageUrl,
+        bio:bio,
+        isEmailVerified: false);
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel!.uId)
