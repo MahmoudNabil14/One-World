@@ -14,7 +14,7 @@ import 'package:social_app/shared/themes.dart';
 Future<void> onBackgroundMessageHandler(RemoteMessage message)async {
 
   print(message.data.toString());
-  showToast(message: 'Haaaaaaaaaaacker', state: toastStates.ERROR);
+  // showToast(message: 'Haaaaaaaaaaacker', state: toastStates.ERROR);
 
 }
 
@@ -28,12 +28,12 @@ void main() async {
 
   FirebaseMessaging.onMessage.listen((event) { 
     print(event.data.toString());
-    showToast(message: 'on message', state: toastStates.ERROR);
+    // showToast(message: 'on message', state: toastStates.ERROR);
   });
   
   FirebaseMessaging.onMessageOpenedApp.listen((event) { 
     print(event.data.toString());
-    showToast(message: 'on message opened app', state: toastStates.ERROR);
+    // showToast(message: 'on message opened app', state: toastStates.ERROR);
   });
   
   FirebaseMessaging.onBackgroundMessage((message) => onBackgroundMessageHandler(message));

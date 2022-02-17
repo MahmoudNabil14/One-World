@@ -119,14 +119,9 @@ class PostScreen extends StatelessWidget {
                         Stack(
                           alignment: AlignmentDirectional.topEnd,
                           children: [
-                            Container(
-                              height: 300.0,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.0),
-                                image: DecorationImage(
-                                    image: FileImage(postPhoto!),
-                                    fit: BoxFit.cover),
+                            LimitedBox(
+                              maxHeight: 500,
+                              child: Image(image: FileImage(postPhoto!)
                               ),
                             ),
                             Padding(

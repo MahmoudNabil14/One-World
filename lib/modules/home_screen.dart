@@ -23,20 +23,34 @@ class HomeScreen extends StatelessWidget {
         return BuildCondition(
           condition: SocialCubit.get(context).posts.isNotEmpty,
           builder: (context) => SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 0.0,
-              ),
-              itemCount: SocialCubit.get(context).posts.length,
-              itemBuilder: (context, index) => buildPostItem(
-                  SocialCubit.get(context).posts[index], context, index),
-            ),
-          ),
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  if(state is SocialCreatePostWithoutPhotoLoadingState ||state is SocialCreatePostWithPhotoLoadingState)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const [
+                          SizedBox(height: 5.0,),
+                          LinearProgressIndicator(),
+                          SizedBox(height: 10.0,),
+                        ],
+                      ),
+                    ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 0.0,
+                    ),
+                    itemCount: SocialCubit.get(context).posts.length,
+                    itemBuilder: (context, index) => buildPostItem(
+                        SocialCubit.get(context).posts[index], context, index),
+                  ),
+                ],
+              )),
           fallback: (context) =>
-             const Center(child: CircularProgressIndicator()),
+              const Center(child: CircularProgressIndicator()),
         );
       },
     );
@@ -60,11 +74,15 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 27.0,
-                          backgroundImage: SocialCubit.get(context).userModel!.uId==model.uId?NetworkImage(
-                            SocialCubit.get(context).userModel!.image,
-                          ):NetworkImage(
-                            model.profileImage,
-                          ),
+                          backgroundImage:
+                              SocialCubit.get(context).userModel!.uId ==
+                                      model.uId
+                                  ? NetworkImage(
+                                      SocialCubit.get(context).userModel!.image,
+                                    )
+                                  : NetworkImage(
+                                      model.profileImage,
+                                    ),
                         ),
                         const SizedBox(
                           width: 12.0,
@@ -73,24 +91,12 @@ class HomeScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    model.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .copyWith(height: 1.3),
-                                  ),
-                                  const SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  const Icon(
-                                    Icons.check_circle,
-                                    color: Colors.blue,
-                                    size: 16.0,
-                                  ),
-                                ],
+                              Text(
+                                model.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(height: 1.3),
                               ),
                               Text(
                                 model.dateTime,
@@ -141,11 +147,13 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       top: 10.0, bottom: 10.0),
-                                  child: Image(
-                                    image: NetworkImage(model.postImage),
-                                    height: 300.0,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
+                                  child: LimitedBox(
+                                    maxHeight: 500,
+                                    child: Image(
+                                      image: NetworkImage(model.postImage),
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ), //PostImage
                             ],
@@ -262,7 +270,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Expanded(
                                 child: TextFormField(
-                                  maxLines: null,
+                              maxLines: null,
                               onChanged: (String value) {
                                 sendCommentBtnEnabled = value.isNotEmpty;
                                 if (value.length == 1) {

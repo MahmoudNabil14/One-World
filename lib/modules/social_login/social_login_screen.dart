@@ -4,10 +4,13 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_cubit.dart';
 import 'package:social_app/modules/social_login/social_login_cubit/social_login_states.dart';
+import 'package:social_app/modules/social_register/social_register_cubit/social_register_states.dart';
 import 'package:social_app/modules/social_register/social_register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
+
+import '../../layout/social_cubit/social_cubit.dart';
 
 class SocialLoginScreen extends StatelessWidget {
   var emailController = TextEditingController();
@@ -22,10 +25,12 @@ class SocialLoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is SocialLoginErrorState) {
               // showToast(message: state.error.toString(), state: toastStates.ERROR);
-            } else if (state is SocialLoginSuccessState) {
+            } else if (state is SocialLoginSuccessState ) {
               CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
                 uId = CacheHelper.getData(key: 'uId');
-                navigateAndEnd(context, const SocialLayout());
+                SocialCubit.get(context).getUserData().then((value) {
+                  navigateAndEnd(context, const SocialLayout());
+                });
               });
             }
           },
