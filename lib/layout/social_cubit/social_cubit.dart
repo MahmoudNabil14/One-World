@@ -385,4 +385,6 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialGetMessagesSuccessState());
     });
   }
+
+
 }

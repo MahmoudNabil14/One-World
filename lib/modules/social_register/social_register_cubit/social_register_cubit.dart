@@ -63,4 +63,20 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
     emit(SocialChangeRegisterSuffixState());
   }
+
+  void changeRadioButton(radioValue, newValue ){
+    radioValue = newValue;
+    print(radioValue);
+    emit(SocialRadioButtonSelectedState());
+  }
+
+  void clearButton({TextEditingController? controller1,TextEditingController? controller2,TextEditingController? controller3,TextEditingController? controller4, String? radioValue}){
+    controller1!.text= '';
+    controller2!.text= '';
+    controller3!.text= '';
+    controller4!.text= '';
+    radioValue = '';
+    emit(SocialClearButtonState());
+  }
+
 }

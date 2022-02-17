@@ -9,15 +9,26 @@ import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 
-class SocialRegisterScreen extends StatelessWidget {
-  var nameController = TextEditingController();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var phoneController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
-  int? value ;
+class SocialRegisterScreen extends StatefulWidget {
 
   SocialRegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SocialRegisterScreen> createState() => _SocialRegisterScreenState();
+}
+
+class _SocialRegisterScreenState extends State<SocialRegisterScreen> {
+  var nameController = TextEditingController();
+
+  var emailController = TextEditingController();
+
+  var passwordController = TextEditingController();
+
+  var phoneController = TextEditingController();
+
+  var formKey = GlobalKey<FormState>();
+
+  var radioValue ;
 
   @override
   Widget build(BuildContext context) {
@@ -131,62 +142,100 @@ class SocialRegisterScreen extends StatelessWidget {
                       const SizedBox(
                         height: 15.0,
                       ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       child: ListTile(
-                      //         title: Text('Male',style: Theme.of(context).textTheme.subtitle2,),
-                      //         leading: Radio(
-                      //             value: "1",
-                      //             groupValue: 'male',
-                      //             onChanged: (value) {}),
-                      //
-                      //       ),
-                      //     ),
-                      //     Expanded(
-                      //       child: ListTile(
-                      //         title: Text('Male',style: Theme.of(context).textTheme.subtitle2,),
-                      //         leading: Radio(
-                      //             value: "1",
-                      //             groupValue: 1,
-                      //             onChanged: (value) {
-                      //               value = value;
-                      //             }),
-                      //
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 15.0,
-                      // ),
-                      Conditional.single(
-                        context: context,
-                        fallbackBuilder: (BuildContext context) => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        conditionBuilder: (BuildContext context) =>
-                            state is! SocialRegisterLoadingState,
-                        widgetBuilder: (BuildContext context) => SizedBox(
-                          height: 50.0,
-                          width: double.infinity,
-                          child: MaterialButton(
-                            color: Colors.blue,
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                cubit.userRegister(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    phone: phoneController.text);
-                              }
-                            },
-                            child: Text(
-                              "Register".toUpperCase(),
-                              style: const TextStyle(color: Colors.white),
+                      Row(
+                        children: [
+                          const Text(
+                            "Gender:",
+                            style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                              child: RadioListTile(
+                                  title: const Text('Male'),
+                                  value: 1,
+                                  groupValue: radioValue,
+                                  onChanged: (newValue) {
+                                    SocialRegisterCubit.get(context).changeRadioButton(radioValue, newValue);
+                                  })),
+                          Expanded(
+                              child: RadioListTile(
+                                  title: const Text('Female'),
+                                  value: 2,
+                                  groupValue:radioValue,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      radioValue= newValue;
+                                    });
+                                  })),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100.0),
+                              ),
+                              height: 50.0,
+                              child: MaterialButton(
+                                  color: Colors.blue,
+                                  child: Text(
+                                    "Clear".toUpperCase(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    SocialRegisterCubit.get(context).clearButton(
+                                        controller1: nameController,
+                                        controller2: emailController,
+                                        controller3: passwordController,
+                                        controller4: phoneController,
+                                        radioValue: radioValue,
+                                    );
+                                  }),
                             ),
                           ),
-                        ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Expanded(
+                            child: Conditional.single(
+                              context: context,
+                              fallbackBuilder: (BuildContext context) =>
+                                  const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              conditionBuilder: (BuildContext context) =>
+                                  state is! SocialRegisterLoadingState,
+                              widgetBuilder: (BuildContext context) =>
+                                  Container(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100.0)),
+                                height: 50.0,
+                                child: MaterialButton(
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      cubit.userRegister(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                          phone: phoneController.text,
+                                      );
+                                    }
+                                  },
+                                  child: Text(
+                                    "Register".toUpperCase(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

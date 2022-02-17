@@ -20,3 +20,7 @@ class SocialUserCreateSuccessState extends SocialRegisterStates {
 class SocialUserCreateErrorState extends SocialRegisterStates {}
 
 class SocialChangeRegisterSuffixState extends SocialRegisterStates {}
+
+class SocialRadioButtonSelectedState extends SocialRegisterStates{}
+
+class SocialClearButtonState extends SocialRegisterStates{}
